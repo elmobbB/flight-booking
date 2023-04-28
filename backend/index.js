@@ -5,6 +5,7 @@ import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import hotelsRoute from "./routes/hotels.js";
 import roomsRoute from "./routes/rooms.js";
+
 const app = express();
 dotenv.config();
 
@@ -22,10 +23,27 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //middlewares
+
+app.use(express.json());
+
+//all the routes for our server are located in the file routes/authjs.  or routes.hotel etc .
+//  then tell our server to use these module for all the incoming requests to routes that start with /auth.js etc
 app.use("/backend/auth", authRoute);
-app.use("/backend/users", authRoute);
-app.use("/backend/hotels", authRoute);
-app.use("/backend/rooms", authRoute);
+app.use("/backend/users", usersRoute);
+app.use("/backend/hotels", hotelsRoute);
+app.use("/backend/rooms", roomsRoute);
+
+app.use((err, req, res, next) => {
+  //if there is any problem in CRUD, do the error handling here
+  const errorStatus = err.status || 500;
+  const errorMessage = err.errorMessage || "something went wrong";
+  return res.status(500).json({
+    succes: false,
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack, //give more details about the error in crud
+  });
+});
 
 app.listen(8800, () => {
   connect();
