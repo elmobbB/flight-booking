@@ -22,9 +22,9 @@ mongoose.connection.on("disconnected", () => {
   console.log("mongodb disconnected");
 });
 
-//middlewares
+//middlewares   impt:able to reach request, response
 
-app.use(express.json());
+app.use(express.json()); //can send json obb to express server
 
 //all the routes for our server are located in the file routes/authjs.  or routes.hotel etc .
 //  then tell our server to use these module for all the incoming requests to routes that start with /auth.js etc
