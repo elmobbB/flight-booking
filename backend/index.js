@@ -5,7 +5,7 @@ import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import hotelsRoute from "./routes/hotels.js";
 import roomsRoute from "./routes/rooms.js";
-
+import cookieParser from "cookie-parser";
 const app = express();
 dotenv.config();
 
@@ -23,7 +23,7 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //middlewares   impt:able to reach request, response
-
+app.use(cookieParser());
 app.use(express.json()); //can send json obb to express server
 
 //all the routes for our server are located in the file routes/authjs.  or routes.hotel etc .
@@ -36,7 +36,7 @@ app.use("/backend/rooms", roomsRoute);
 app.use((err, req, res, next) => {
   //if there is any problem in CRUD, do the error handling here
   const errorStatus = err.status || 500;
-  const errorMessage = err.errorMessage || "something went wrong";
+  const errorMessage = err.message || "something went wrong";
   return res.status(500).json({
     succes: false,
     status: errorStatus,
