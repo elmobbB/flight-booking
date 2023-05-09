@@ -7,6 +7,7 @@ import {
   updateHotel,
 } from "../controllers/hotel.js";
 import Hotel from "../models/Hotel.js";
+import { verifyAdmin } from "../utils/verifyToken.js";
 // import { createError } from "../utils/error";
 const router = express.Router();
 
@@ -20,7 +21,7 @@ const router = express.Router();
 // });
 
 //create
-router.post("/", createHotel);
+router.post("/", verifyAdmin, createHotel);
 // router.post("/", async (req, res, next) => {
 //   const newHotel = new Hotel(req.body);
 //   try {
@@ -31,7 +32,7 @@ router.post("/", createHotel);
 //   }
 // });
 //update
-router.put("/:id", updateHotel);
+router.put("/:id", verifyAdmin, updateHotel);
 // router.put("/:id", async (req, res) => {
 //   try {
 //     //update Hotel collection in database
@@ -49,7 +50,7 @@ router.put("/:id", updateHotel);
 // });
 
 //delete
-router.delete("/:id", deleteHotel);
+router.delete("/:id", verifyAdmin, deleteHotel);
 // router.delete("/:id", async (req, res) => {
 //   try {
 //     //update Hotel collection in database
